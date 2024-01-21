@@ -9,7 +9,7 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, NumericProperty
 
 class MyInput(TextInput):
     mytext = StringProperty()
@@ -18,7 +18,7 @@ class MyInput(TextInput):
         self.bind(text=self.changevalue)
     
     def changevalue(self, widget, value):
-        self.mytext = "".join(reversed(self.text))
+        self.mytext = "".join(self.text)
 
 class MyBox(BoxLayout):
     def __init__(self, **kwargs):
@@ -30,7 +30,15 @@ class MyBox(BoxLayout):
         self.add_widget(self.label)
 
     def textchanged(self, widget, value):
-        self.label.text = "Что? " + value + " ?"
+        try:
+            data = int(value)
+            if 10 < data < 99:
+                data = f'Ваш возраст принят - {str(value)}'
+            else:
+                data = 'Слишком странный возраст'
+        except:
+            data = 'Ошибка - вы ввели не цифры!!!'
+        self.label.text = "Что? " + data + " ЪЪЪ"
 
 class MyApp(App):
     def build(self):
